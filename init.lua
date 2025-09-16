@@ -435,3 +435,35 @@ minetest.register_craft({
 		{ materials.steel_ingot, materials.steel_ingot, materials.steel_ingot }
 	}
 })
+
+
+if minetest.get_modpath("xdecor") then
+
+    minetest.clear_craft({ output = "xdecor:mailbox" })
+
+    minetest.register_lbm({
+        name = "mailbox:replace_xdecor",
+        nodenames = { "xdecor:mailbox" },
+        action = function(pos, node)
+
+            local meta_old = minetest.get_meta(pos)
+            local inv_old = meta_old:get_inventory():get_list("mailbox") or {}
+            local owner = meta_old:get_string("owner") or ""
+
+            minetest.set_node(pos, { name = "mailbox:mailbox", param2 = node.param2 })
+            mailbox.set_owner(pos, owner)
+
+            local meta_new = minetest.get_meta(pos)
+            local inv_new = meta_new:get_inventory()
+            local new_size = inv_new:get_size("mailbox")
+            for i, stack in ipairs(inv_old) do
+                if i <= new_size then
+                    inv_new:set_stack("mailbox", i, stack)
+                end
+            end
+        end,
+    })
+
+    minetest.register_alias_force("xdecor:mailbox", "mailbox:mailbox")
+
+end
