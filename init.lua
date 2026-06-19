@@ -214,7 +214,7 @@ end
 local allowed_books = {
     ["default:book_written"] = true,
     ["mcl_books:written_book"] = true,
-	["envelopes:envelope_sealed"] = true
+    ["envelopes:envelope_sealed"] = true
 }
 
 local allow_metadata_inventory_put = function(pos, listname, _, stack, player)
